@@ -1,10 +1,10 @@
- (function() {
+(function() {
     // Create the connector object
     var myConnector = tableau.makeConnector();
 
     // Define the schema
     myConnector.getSchema = function(schemaCallback) {
-        var cols = [
+        var cols = [ 
           {
               id: "head",
               alias: "Head",
@@ -66,28 +66,28 @@
         }
       ];
 
-        var tableSchema = {
+        var tableSchema = { // Create tableSchema obj
             id: "amiiboapi",
             alias: "Amiibo API",
             columns: cols
         };
 
-        schemaCallback([tableSchema]);
+        schemaCallback([tableSchema]); // Callback function to report the table 
     };
 
     // Download the data
-    myConnector.getData = function(table, doneCallback) {
-        $.getJSON("https://www.amiiboapi.com/api/amiibo/", function(resp) {
+    myConnector.getData = function(table, doneCallback) { 
+        $.getJSON("https://www.amiiboapi.com/api/amiibo/", function(resp) { //GET HTTP request to load data from Amiibo API
             var feat = resp.amiibo,
                 tableData = [];
 
             // Iterate over the JSON object
             for (var i = 0, len = feat.length; i < len; i++) {
-                tableData.push({
+                tableData.push({ // Add to tableData array
                     "head": feat[i].head,
                     "tail": feat[i].tail,
                     "amiiboSeries": feat[i].amiiboSeries,
-					"character": feat[i].character,
+                    "character": feat[i].character,
                     "name": feat[i].name,
                     "gameSeries": feat[i].gameSeries,
                     "release_na": feat[i].release.na,
@@ -100,16 +100,16 @@
             }
 
             table.appendRows(tableData);
-            doneCallback();
+            doneCallback(); // To indicate data has been gathered
         });
     };
 
-    tableau.registerConnector(myConnector);
+    tableau.registerConnector(myConnector); // Registers the connecter with Tableau
 
-    // Create event listeners for when the user submits the form
+    // Create event listeners for when the user clicks the Get Amiibo Data! button
     $(document).ready(function() {
         $("#submitButton").click(function() {
-            tableau.connectionName = "Amiibo API"; // This will be the data source name in Tableau
+            tableau.connectionName = "Amiibo API"; // Data source name in Tableau
             tableau.submit(); // This sends the connector object to Tableau
         });
     });

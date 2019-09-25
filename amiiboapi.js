@@ -20,6 +20,11 @@
             alias: "Amiibo Series",
             dataType: tableau.dataTypeEnum.string
          },
+          {
+            id: "character",
+            alias: "Character",
+            dataType: tableau.dataTypeEnum.string
+         },
          {
             id: "gameSeries",
             alias: "Game Series",
@@ -72,7 +77,7 @@
 
     // Download the data
     myConnector.getData = function(table, doneCallback) {
-        $.getJSON("http://www.amiiboapi.com/api/amiibo/", function(resp) {
+        $.getJSON("https://www.amiiboapi.com/api/amiibo/", function(resp) {
             var feat = resp.amiibo,
                 tableData = [];
 
@@ -82,6 +87,7 @@
                     "head": feat[i].head,
                     "tail": feat[i].tail,
                     "amiiboSeries": feat[i].amiiboSeries,
+					"character": feat[i].character,
                     "name": feat[i].name,
                     "gameSeries": feat[i].gameSeries,
                     "release_na": feat[i].release.na,
